@@ -3,19 +3,11 @@ from pandas import DataFrame
 
 import folium 
 import requests
-import json
 import pandas as pd
 
 from pprint import pprint
 
-import os
-
-from dotenv import load_dotenv
-load_dotenv()
-
-API_KEY = os.getenv('API_KEY') 
-PROXY = os.getenv('PROXY', 'https://api.urbandataanalytics.com')
-DEBUG = os.getenv('DEBUG') == '1'
+from settings import env
 
 @dataclass
 class Endpoint:
@@ -25,7 +17,7 @@ class Endpoint:
 @dataclass
 class Search(Endpoint):
     
-    url: str = f"{PROXY}/api/integration/v2/comparables/search/advanced"
+    url: str = f"{env.PROXY}/api/integration/v2/comparables/search/advanced"
     df: DataFrame = None
     cur_page:int = 1
 
@@ -42,7 +34,7 @@ class Search(Endpoint):
         if 'page_num' not in self.params:
             self.params['page_num'] = self.cur_page
         if verbose: pprint(self.params)
-        self.response = requests.get(self.url, headers={'Authorization': API_KEY}, params=self.params)
+        self.response = requests.get(self.url, headers={'Authorization': env.API_KEY}, params=self.params)
         self.df = self._df()
         return self
 
