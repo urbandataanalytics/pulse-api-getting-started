@@ -56,14 +56,15 @@ class Search(Endpoint):
         score_fields = ['_id'] + [c for c in df.columns if 'score' in c] + ['similarity', 'distance']
         return df[score_fields].style.background_gradient(cmap='Blues', vmin=0, vmax=100)
 
-    def map(self):
+    def map(self, fields=['_id'] ):
+
         df = self.df.copy()
         df['lat'] = df.location.map(lambda x: x['coordinates'][1])
         df['lon'] = df.location.map(lambda x: x['coordinates'][0])
         x, y = df.lat.mean(), df.lon.mean()
-        map = folium.Map(location=[x, y], zoom_start=17)
+        map = folium.Map(location=[x, y], zoom_start=17, )
         for idx,point in df.iterrows():
-            folium.Marker((point.lat, point.lon), popup='Point').add_to(map)
+            folium.Marker((point.lat, point.lon), popup=html(point), lazy=True).add_to(map)
         return map
 
     def show(self, columns = []):
@@ -103,4 +104,40 @@ def make_clickable(val):
     
 def make_image(val):
     return '<img width="200px" src="{}"></a>'.format(val)
+
+def html(x):
+    images = x.get('images_list', [])
+    title = x.get('title')
+    url = x.get('url')
+
+    img_tags = []
     
+    for image in images[:10]:
+        img_url = image.get('url', '')
+        if img_url:
+            img_tags.append(f"<img width=100px src='{img_url}'></img>")
+    
+    img_html = "".join(img_tags)
+    return f"""
+    <html>
+        <head>
+            <style>
+                .grid-container {{
+                    display: grid;
+                    grid-template-columns: repeat(3, 1fr);
+                    gap: 10px;
+                }}
+                .grid-item {{
+                    width: 100px;
+                }}
+            </style>
+        </head>
+        <body>
+            <p style="font-size:20px" >{title}</p>
+            <a target=_blank style="font-size:15px" href={url}>listing url</a>
+            <div class="grid-container">
+                {img_html}
+            </div>
+        </body>
+    </html>
+    """
