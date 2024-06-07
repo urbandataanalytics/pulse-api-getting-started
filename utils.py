@@ -19,6 +19,8 @@ class Search(Endpoint):
     
     url: str = f"{env.PROXY}/api/integration/v2/comparables/search/advanced"
     df: DataFrame = None
+    location: list = None
+    response: object = None
     cur_page:int = 1
 
     def __init__(self, **params):
@@ -35,6 +37,12 @@ class Search(Endpoint):
             self.params['page_num'] = self.cur_page
         if verbose: pprint(self.params)
         self.response = requests.get(self.url, headers={'Authorization': env.API_KEY}, params=self.params)
+
+        if query:=self.response.json().get('query_params'):
+            self.location = [query.get('lat'), query.get('lon')]
+        else:
+            self.location = None
+
         self.df = self._df()
         return self
 
@@ -56,15 +64,47 @@ class Search(Endpoint):
         score_fields = ['_id'] + [c for c in df.columns if 'score' in c] + ['similarity', 'distance']
         return df[score_fields].style.background_gradient(cmap='Blues', vmin=0, vmax=100)
 
-    def map(self, fields=['_id'] ):
+    def map(self, distance=None):
+
+        if not distance: 
+            distance = self.response.json().get('query_params', {}).get('distance')
 
         df = self.df.copy()
-        df['lat'] = df.location.map(lambda x: x['coordinates'][1])
-        df['lon'] = df.location.map(lambda x: x['coordinates'][0])
+
         x, y = df.lat.mean(), df.lon.mean()
+
         map = folium.Map(location=[x, y], zoom_start=17, )
+
         for idx,point in df.iterrows():
             folium.Marker((point.lat, point.lon), popup=html(point), lazy=True).add_to(map)
+
+        if self.location:
+
+            folium.Circle(
+                location=self.location,
+                radius=5,
+                color="white",
+                weight=3,
+                fill_opacity=1,
+                opacity=1,
+                fill_color="red",
+                fill=False,  # gets overridden by fill_color
+                popup="Center",
+            ).add_to(map)
+
+            if distance:
+                folium.Circle(
+                    location=self.location,
+                    radius=distance,
+                    color="blue",
+                    weight=1,
+                    fill_opacity=0.3,
+                    opacity=1,
+                    fill_color="lightgray",
+                    fill=False,  # gets overridden by fill_color
+                    popup="{} meters".format(distance),
+                ).add_to(map)
+
         return map
 
     def show(self, columns = []):
