@@ -1,4 +1,4 @@
-# Pulse API Getting Started
+# Pulse API - Getting Started
 
 Welcome to the Pulse API Getting Started guide. This repository provides an introduction and practical examples to help you integrate and utilize the Pulse API effectively by using simple python instrumentation.
 
