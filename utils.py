@@ -82,7 +82,7 @@ class Search(Endpoint):
 
             folium.Circle(
                 location=self.location,
-                radius=5,
+                # radius=5,
                 color="white",
                 weight=3,
                 fill_opacity=1,
