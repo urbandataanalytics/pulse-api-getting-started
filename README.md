@@ -8,7 +8,6 @@ Welcome to the Pulse API Getting Started guide. This repository provides an intr
 - [Requirements](#requirements)
 - [Installation](#installation)
 - [Usage](#usage)
-- [Examples](#examples)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -41,6 +40,7 @@ This repository includes Jupyter Notebooks with detailed examples on how to use 
 1. `1-Securing.ipynb` - How to secure your API access.
 2. `2-Search.ipynb` - Examples of search queries.
 3. `3-Usage.ipynb` - Usage statistics and analytics.
+4. ...
 
 To start the Jupyter Notebook server, run:
 ```bash
