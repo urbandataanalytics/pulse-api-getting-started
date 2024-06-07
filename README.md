@@ -1,6 +1,6 @@
 # Pulse API Getting Started
 
-Welcome to the Pulse API Getting Started guide. This repository provides an introduction and practical examples to help you integrate and utilize the Pulse API effectively.
+Welcome to the Pulse API Getting Started guide. This repository provides an introduction and practical examples to help you integrate and utilize the Pulse API effectively by using simple python instrumentation.
 
 ## Table of Contents
 
@@ -14,7 +14,7 @@ Welcome to the Pulse API Getting Started guide. This repository provides an intr
 
 ## Introduction
 
-The Pulse API allows you to access various real estate data and analytics. This guide includes Jupyter Notebooks demonstrating different aspects of the API, from securing your access to making various types of queries.
+The Pulse API allows you to access various real estate data and analytics. This guide includes Jupyter Notebooks demonstrating different selected use cases, from securing your access to making various types of queries.
 
 ## Requirements
 
@@ -45,25 +45,6 @@ This repository includes Jupyter Notebooks with detailed examples on how to use 
 To start the Jupyter Notebook server, run:
 ```bash
 jupyter notebook
-```
-
-## Examples
-
-### Securing Your API Access
-
-```python
-# Example code to secure API access
-import pulse_api
-api_key = 'your_api_key'
-pulse = pulse_api.Pulse(api_key)
-```
-
-### Search Query
-
-```python
-# Example search query
-response = pulse.search(query='example query')
-print(response)
 ```
 
 ## Contributing
