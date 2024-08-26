@@ -1,6 +1,4 @@
 
-from typing import Optional
-from pandas import DataFrame
 import requests
 from utils.settings import env
 from pydantic import BaseModel

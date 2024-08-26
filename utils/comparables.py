@@ -11,7 +11,7 @@ from pprint import pprint
 @dataclass
 class Search(Endpoint):
     
-    url: str = f"{env.PROXY}/api/integration/v2/comparables/search/advanced"
+    url: str = f"{env.PROXY}/api/integration/c2/comparables/search/advanced"
     location: list = None
     df: object = None
 
@@ -35,7 +35,7 @@ class Search(Endpoint):
         self.build_df()
 
         if len(self.df)==0: 
-            raise Exception('No results')
+            print('No results')
 
         return self
 
@@ -48,7 +48,7 @@ class Search(Endpoint):
             total_count = pagination.get('total_count')
             page_num = pagination.get('page_current')
             page_count = pagination.get('page_count')
-            print(f'Total: {total_count} - Page: {page_num}/{page_count}')
+            # print(f'Total: {total_count} - Page: {page_num}/{page_count}')
         if results:= response_json.get('results'):
             self.df = pd.DataFrame(results)
         else: return None

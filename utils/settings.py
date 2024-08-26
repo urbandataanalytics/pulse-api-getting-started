@@ -1,5 +1,4 @@
 from dotenv import load_dotenv
-load_dotenv()
 
 from os import environ
 
@@ -17,5 +16,9 @@ class Config:
         attr = environ.get(item.upper())
         setattr(self, item, attr) if attr is not None else ...  # this is not really necessary
         return attr
+
+def refresh():
+    global env
+    env = Config()
 
 env = Config()

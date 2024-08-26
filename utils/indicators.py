@@ -25,7 +25,7 @@ def coordinates_to_wkt(coordinates):
 
 class Indicators(Endpoint):
 
-    url: str = f"{env.PROXY}/api/integration/super/indicators/advanced"
+    url: str = f"{env.PROXY}/api/integration/v2/indicators/advanced"
     center_x: float = None
     center_y: float = None
 
